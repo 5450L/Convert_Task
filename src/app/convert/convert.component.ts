@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { map, Subscription } from 'rxjs';
-import { currencyData, DataService } from '../data.service';
+import { CurrencyData } from '../models/currencyData.model';
+import { currencyData, DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-convert',
@@ -15,58 +16,82 @@ export class ConvertComponent implements OnInit, OnDestroy {
     buy: '1',
     sale: '1',
   };
-  currencies?: currencyData[] = [];
+  currencies: currencyData[] = [];
 
-  currency1?: currencyData = this.currencies?.find((cur) => {
-    return cur.ccy === 'USD';
-  });
-  currency2?: currencyData = this.currencies?.find((cur) => {
-    return cur.ccy === 'UAH';
-  });
+  currencyFrom: CurrencyData = new CurrencyData('', '', '', '');
+  currencyTo: CurrencyData = new CurrencyData('', '', '', '');
 
-  amount1!: string | number;
-  amount2!: string | number;
+  amountFrom: string = '';
+  amountTo: string = '';
 
   constructor(private apiData: DataService) {}
 
   chooseCur(selector: HTMLSelectElement, name: string) {
     if (name === 'from') {
-      this.currency1 = this.currencies?.find((cur) => {
-        return cur.ccy === selector.value;
-      });
+      
+      this.currencyFrom =
+        this.currencies?.find((cur) => {
+          return cur.ccy === selector.value;
+        }) ?? new CurrencyData('', '', '', '');
     } else
-      this.currency2 = this.currencies?.find((cur) => {
-        return cur.ccy === selector.value;
-      });
+
+      this.currencyTo =
+        this.currencies.find((cur) => {
+          return cur.ccy === selector.value;
+        }) ?? new CurrencyData('', '', '', '');
+
+    this.convert(name);
   }
 
   convert(name: string) {
+
     if (name === 'from') {
-      this.amount2 =
-        (+this.amount1 * +this.currency1!.buy) / +this.currency2!.sale;
-      this.amount2 = this.amount2.toFixed(2);
+
+      this.amountTo = (
+        (+this.amountFrom * +this.currencyFrom.buy) /
+        +this.currencyTo.sale
+      ).toString();
+
+      this.amountTo = (+this.amountTo).toFixed(2);
     } else {
-      this.amount1 =
-        (+this.amount2 * +this.currency2!.buy) / +this.currency1!.sale;
-      this.amount1 = this.amount1.toFixed(2);
+
+      this.amountFrom = (
+        (+this.amountTo * +this.currencyTo.buy) /
+        +this.currencyFrom.sale
+      ).toString();
+
+      this.amountFrom = (+this.amountFrom).toFixed(2);
     }
+
+    if (!this.amountFrom || !this.amountTo) {
+      this.amountFrom = '';
+      this.amountTo = '';
+    }
+
   }
 
   ngOnInit(): void {
     this.subscription = this.apiData.getCurrencyData().subscribe((data) => {
-      console.log(data);
-      this.currencies?.push(...data);
-      this.currencies?.push(this.UAH);
+     
+      this.currencies.push(...data);
+      this.currencies.push(this.UAH);
 
-      this.currency1 = this.currencies?.find((cur) => {
-        return cur.ccy === 'USD';
-      });
-      this.currency2 = this.currencies?.find((cur) => {
-        return cur.ccy === 'UAH';
-      });
+      this.currencyFrom =
+        this.currencies.find((cur) => {
+          return cur.ccy === 'USD';
+        }) ?? new CurrencyData('', '', '', '');
+
+      this.currencyTo =
+        this.currencies.find((cur) => {
+          return cur.ccy === 'UAH';
+        }) ?? new CurrencyData('', '', '', '');
+
     });
   }
+
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }
+
 }
+

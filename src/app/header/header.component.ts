@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { currencyData, DataService } from '../data.service';
+import { CurrencyData } from '../models/currencyData.model';
+import { currencyData, DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,7 @@ import { currencyData, DataService } from '../data.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  currencies?: currencyData[];
+  currencies?: CurrencyData[];
   currentDate = Date.now();
   subscription?: Subscription;
 
