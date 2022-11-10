@@ -1,0 +1,26 @@
+<div class="container">
+
+  <div id="date">
+    <h1 style="cursor:default ;">{{ currentDate | date: "mediumDate" }}</h1>
+  </div>
+
+  <div id="rates">
+
+    <div class="currency" >
+      <img src="../../assets/images/europe-flag-icon.svg" alt="EUR" />
+      <span *ngIf="!currencies"></span>
+      <span class="currency-rate" *ngIf="currencies">{{
+        currencies[0].buy | currency: "EUR":"symbol"
+      }}</span>
+    </div>
+
+    <div class="currency" style="border-left: 1px solid rgb(165, 158, 158)">
+      <img src="../../assets/images/united-states-flag-icon.svg" alt="USD" />
+      <span *ngIf="!currencies"></span>
+      <span class="currency-rate" *ngIf="currencies">{{
+        currencies[1].buy | currency: "USD":"symbol"
+      }}</span>
+    </div>
+  </div>
+  
+</div>

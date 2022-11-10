@@ -1,0 +1,41 @@
+<form>
+  <div class="currency-input">
+    <label for="from">From :</label>
+    <div class="input-group">
+      <select #selectFrom (input)="chooseCur(selectFrom, 'from')">
+        <option *ngFor="let currency of currencies" >
+          {{ currency.ccy }}
+        </option>
+      </select>
+      <input
+        [(ngModel)]="amount1"
+        name="from"
+        id="from"
+        type="number"
+        placeholder="Type amount"
+        min="1"
+        (input)="convert('from')"
+      />
+    </div>
+  </div>
+
+  <div class="currency-input">
+    <label for="to">To : </label>
+    <div class="input-group">
+      <select #selectTo (input)="chooseCur(selectTo, 'to')">
+        <option *ngFor="let currency of currencies!.reverse()">
+          {{ currency.ccy }}
+        </option>
+      </select>
+      <input
+        [(ngModel)]="amount2"
+        name="to"
+        id="to"
+        type="number"
+        placeholder="Type amount"
+        min="1"
+        (input)="convert('to')"
+      />
+    </div>
+  </div>
+</form>

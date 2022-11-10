@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 4rem;
+
+  color: rgb(255, 255, 255);
+}
+
+/* date */
+
+#date {
+  align-self: center;
+}
+
+/* rates */
+#rates {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 24%;
+  border-radius: 6px;
+  background-color: rgba(88, 99, 99, 0.8);
+
+  padding: 0.5rem 0;
+}
+.currency {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  width: 100%;
+  padding: 0.7rem 1rem 0.7rem 1rem;
+}
+.currency img {
+  height: 2.5rem;
+  border-radius: 6px;
+  margin-right: 0.75rem;
+}
+.currency span {
+  align-self: center;
+}
